@@ -5,7 +5,7 @@ var Main = require('Main');
 
 // Load foundation
 //require('style!css!foundation-sites/dist/js/foundation.js/foundation.min.css')
-$(document).foundation();
+//$(document).foundation();
 
 // App css
 require('style!css!sass!applicationStyles')
@@ -17,3 +17,7 @@ ReactDOM.render(
   </Router>,
   document.getElementById('app')
 );
+
+//require('./redux-example.jsx');
+
+require('./redux-todo-example.jsx');
