@@ -6,7 +6,19 @@ console.log("Redux Working");
 var reducer = (state, action) =>{
     //Default state
     state = state || {name: 'Anonymous'};
-    return state;
+
+    console.log('New Action', action);
+    switch(action.type) {
+        case 'CHANGE_NAME' :
+            return{
+                ...state,
+                name: action.name
+            };
+
+        default:
+            return state;
+    }
+
 };
 
 
@@ -18,10 +30,14 @@ var currentState = store.getState();
 
 console.log('currentSate',currentState);
 
+//Action is responsible for changing state
+store.dispatch ( {
+  //Action NAme is type
+    type : 'CHANGE_NAME',
+    name : 'Andrew'
+});
 
-
-
-
+console.log('Name Should Be Andrew', store.getState())
 
 
 
