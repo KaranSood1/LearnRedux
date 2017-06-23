@@ -7,7 +7,9 @@ var reducer = (state, action) =>{
     //Default state
     state = state || {name: 'Anonymous'};
 
-    console.log('New Action', action);
+    //Just prints the action
+    // console.log('New Action', action);
+
     switch(action.type) {
         case 'CHANGE_NAME' :
             return{
@@ -22,7 +24,19 @@ var reducer = (state, action) =>{
 };
 
 
-var store = redux.createStore(reducer);
+var store = redux.createStore(reducer, redux.compose(
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+));
+
+//Subscribe to changes
+//Call everytime the state changes
+var unsubscribe = store.subscribe(()=>{
+    var state = store.getState();
+    console.log("Name is" , state.name );
+    document.getElementById('app').innerHTML = state.name;
+});
+//unsubscribe();
+
 
 //Get state method returns our object i.e.
 //returns out obj with name = anonymous
@@ -37,7 +51,12 @@ store.dispatch ( {
     name : 'Andrew'
 });
 
-console.log('Name Should Be Andrew', store.getState())
+
+
+store.dispatch({
+    type: 'CHANGE_NAME',
+    name: 'Emily'
+})
 
 
 
