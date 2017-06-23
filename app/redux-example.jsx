@@ -2,10 +2,16 @@ var redux = require('redux');
 
 console.log("Redux Working");
 
-
+var stateDefault = {
+    name: 'Anonymous',
+    hobbies: [],
+    movies:[]
+};
+var nextHobbyId =1;
+var nextMovieId = 1;
 var reducer = (state, action) =>{
     //Default state
-    state = state || {name: 'Anonymous'};
+    state = state || stateDefault;
 
     //Just prints the action
     // console.log('New Action', action);
@@ -16,7 +22,32 @@ var reducer = (state, action) =>{
                 ...state,
                 name: action.name
             };
+        case 'ADD_HOBBY' :
+            return {
+                //All the names
+                ...state,
+                hobbies: [
+                    //all the hobbies
+                    ...state.hobbies,
+                    {
+                        id: nextHobbyId++,
+                        hobby: action.hobby
+                    }
+            ]
+            };
+        case 'ADD_MOVIE_GENRE' :
+            return{
+                ...state,
+                movies: [
+                    ...state.movies,
+                    {
+                        id: nextMovieId++,
+                        title: action.title,
+                        genre: action.genre
 
+                    }
+                ]
+            };
         default:
             return state;
     }
@@ -34,6 +65,7 @@ var unsubscribe = store.subscribe(()=>{
     var state = store.getState();
     console.log("Name is" , state.name );
     document.getElementById('app').innerHTML = state.name;
+    console.log('New State ', store.getState());
 });
 //unsubscribe();
 
@@ -51,13 +83,21 @@ store.dispatch ( {
     name : 'Andrew'
 });
 
-
+store.dispatch({
+    type : 'ADD_HOBBY',
+    hobby : 'Running'
+});
 
 store.dispatch({
     type: 'CHANGE_NAME',
     name: 'Emily'
-})
+});
 
+store.dispatch({
+   type:'ADD_MOVIE_GENRE',
+    title: 'FAN',
+    genre: 'Fiction'
+});
 
 
 
