@@ -48,6 +48,20 @@ var reducer = (state, action) =>{
                     }
                 ]
             };
+        case 'REMOVE_HOBBY' :
+            return {
+                ...state,
+                hobbies: state.hobbies.filter(function (hobby) {
+                    return hobby.id !== action.id
+                })
+            };
+        case 'REMOVE_MOVIE' :
+            return {
+                ...state,
+                movies : state.movies.filter(function (movie) {
+                    return movie.id !==action.id
+                })
+            };
         default:
             return state;
     }
@@ -89,6 +103,18 @@ store.dispatch({
 });
 
 store.dispatch({
+    type : 'ADD_HOBBY',
+    hobby : 'Walking'
+});
+
+//remove array item
+store.dispatch({
+   type:'REMOVE_HOBBY',
+    id:2
+});
+
+
+store.dispatch({
     type: 'CHANGE_NAME',
     name: 'Emily'
 });
@@ -98,6 +124,18 @@ store.dispatch({
     title: 'FAN',
     genre: 'Fiction'
 });
+
+store.dispatch({
+    type:'ADD_MOVIE_GENRE',
+    title: 'JHMS',
+    genre: 'Romance'
+});
+
+store.dispatch({
+    type:'REMOVE_MOVIE',
+    id:1
+});
+
 
 
 
