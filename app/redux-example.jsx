@@ -2,13 +2,8 @@ var redux = require('redux');
 
 console.log("Redux Working");
 
-var stateDefault = {
-    name: 'Anonymous',
-    hobbies: [],
-    movies:[]
-};
-var nextHobbyId =1;
-var nextMovieId = 1;
+
+
 var oldreducer = (state, action) =>{
     //Default state
     state = state || stateDefault;
@@ -68,6 +63,8 @@ var oldreducer = (state, action) =>{
 
 };
 
+//Name Reducer and action generators
+//----------------------------------
 var nameReducer = (state='Anonymous', action) =>{
     switch (action.type){
         case 'CHANGE_NAME' :
@@ -79,6 +76,17 @@ var nameReducer = (state='Anonymous', action) =>{
     }
 };
 
+var changeName = (name) => {
+  return {
+      type: 'CHANGE_NAME',
+      name: name
+  }
+};
+
+
+//Hobby Reducer and action generators
+//----------------------------------
+var nextHobbyId =1;
 var hobbiesReducer = (state = [], action) => {
 
     switch (action.type) {
@@ -94,19 +102,32 @@ var hobbiesReducer = (state = [], action) => {
                 }
             ];
         case 'REMOVE_HOBBY' :
-            return {
-                ...state,
-                hobbies: state.filter(function (hobby) {
-                    return hobby.id !== action.id
-                })
-            };
+            return state.filter((hobby)=>hobby.id !== action.id);
 
         default:
             return state;
 
+    };
+};
+
+var addHobby = (hobby) => {
+    return{
+        type : 'ADD_HOBBY',
+        hobby : hobby
     }
-    ;
-}
+};
+
+var removeHobby = (id) => {
+    return {
+        type:'REMOVE_HOBBY',
+        id :   id
+    }
+};
+
+
+//Movie Reducer and action generators
+//----------------------------------
+var nextMovieId = 1;
     var moviesReducer = (state=[],action) => {
         switch (action.type) {
             case 'ADD_MOVIE_GENRE' :
@@ -120,16 +141,31 @@ var hobbiesReducer = (state = [], action) => {
                     }
                 ];
             case 'REMOVE_MOVIE' :
-                return {
-                    ...state,
-                    movies: state.filter(function (movie) {
+                return (
+                    state.filter(function (movie) {
                         return movie.id !== action.id
                     })
-                };
+            );
             default:
                 return state;
         }
     };
+var addMovie = (movie)=>{
+    return{
+        type:'ADD_MOVIE_GENRE',
+        title: movie.title,
+        genre: movie.genre
+    }
+};
+var removeMovie = (id)=>{
+    return{
+        type:'REMOVE_MOVIE',
+        id : id
+
+    }
+};
+
+
 var reducer = redux.combineReducers({
     name: nameReducer,
     hobbies : hobbiesReducer,
@@ -159,51 +195,59 @@ var currentState = store.getState();
 console.log('currentSate',currentState);
 
 //Action is responsible for changing state
-store.dispatch ( {
-  //Action NAme is type
-    type : 'CHANGE_NAME',
-    name : 'Andrew'
-});
+// store.dispatch ( {
+//   //Action NAme is type
+//     type : 'CHANGE_NAME',
+//     name : 'Andrew'
+// });
+//We Will use action generators to replace the above code
+store.dispatch(changeName('Andrew'));
 
-store.dispatch({
-    type : 'ADD_HOBBY',
-    hobby : 'Running'
-});
 
-store.dispatch({
-    type : 'ADD_HOBBY',
-    hobby : 'Walking'
-});
+// store.dispatch({
+//     type : 'ADD_HOBBY',
+//     hobby : 'Running'
+// });
+store.dispatch(addHobby('Running'));
+
+
+// store.dispatch({
+//     type : 'ADD_HOBBY',
+//     hobby : 'Walking'
+// });
+store.dispatch(addHobby('Walking'));
 
 //remove array item
-store.dispatch({
-   type:'REMOVE_HOBBY',
-    id:2
-});
+// store.dispatch({
+//
+// });
+store.dispatch(removeHobby(2));
 
+// store.dispatch({
+//     type: 'CHANGE_NAME',
+//     name: 'Emily'
+// });
+store.dispatch(changeName('Emily'));
 
-store.dispatch({
-    type: 'CHANGE_NAME',
-    name: 'Emily'
-});
+// store.dispatch({
+//    type:'ADD_MOVIE_GENRE',
+//     title: 'FAN',
+//     genre: 'Fiction'
+// });
+store.dispatch(addMovie({title:'FAN',genre:'Fiction'}));
 
-store.dispatch({
-   type:'ADD_MOVIE_GENRE',
-    title: 'FAN',
-    genre: 'Fiction'
-});
+// store.dispatch({
+//     type:'ADD_MOVIE_GENRE',
+//     title: 'JHMS',
+//     genre: 'Romance'
+// });
+store.dispatch(addMovie({title:'JHMS',genre:'Romance'}));
 
-store.dispatch({
-    type:'ADD_MOVIE_GENRE',
-    title: 'JHMS',
-    genre: 'Romance'
-});
-
-store.dispatch({
-    type:'REMOVE_MOVIE',
-    id:1
-});
-
+// store.dispatch({
+//     type:'REMOVE_MOVIE',
+//     id:1
+// });
+store.dispatch(removeMovie(1));
 
 
 
